@@ -48,7 +48,7 @@ def gather_20newsgroups_data():
 def generate_vocabulary(data_path):
     def compute_idf(df, corpus_size):
         assert df > 0
-        return np.log(corpus_size*1./df)
+        return np.log10(corpus_size*1./df)
 
     with open(data_path) as f:
         lines = f.read().splitlines()
@@ -98,6 +98,8 @@ def get_tf_idf(data_path):
         words_tfidfs_normalized = [str(index) + ':' + str(tf_idf_value/np.sqrt(sum_squares)) for index, tf_idf_value in words_tfidfs]
         sparse_rep = ' '.join(words_tfidfs_normalized)
         data_tf_idf.append((label, doc_id, sparse_rep))
+    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf.txt', 'w') as f:
+        f.write('\n'.join([str(label) + '<fff>' + str(doc_id) + '<fff>' + sparse_rep for label, doc_id, sparse_rep in data_tf_idf]))
     return data_tf_idf
 
 #Try running 'em all
