@@ -48,7 +48,7 @@ def gather_20newsgroups_data():
 def generate_vocabulary(data_path):
     def compute_idf(df, corpus_size):
         assert df > 0
-        return np.log(corpus_size*1./df)
+        return np.log10(corpus_size*1./df)
 
     with open(data_path) as f:
         lines = f.read().splitlines()
@@ -104,7 +104,7 @@ def get_tf_idf(data_path):
 
 #Try running 'em all
 if __name__ == '__main__':
-    # gather_20newsgroups_data()
-    # generate_vocabulary('../datasets/20news-bydate/20news-full-processed.txt')
+    gather_20newsgroups_data()
+    generate_vocabulary('../datasets/20news-bydate/20news-full-processed.txt')
     data_tf_idf_full = get_tf_idf('../datasets/20news-bydate/20news-full-processed.txt')
     print(data_tf_idf_full[69])
