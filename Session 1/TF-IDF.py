@@ -12,7 +12,7 @@ def gather_20newsgroups_data():
     list_newsgroups = [newsgroup for newsgroup in listdir(train_dir)]
     list_newsgroups.sort()
 
-    with open('../datasets/20news-bydate/stop_words.txt') as f:
+    with open('../datasets/20news-bydate/stop_words.txt', encoding = 'ISO-8859-1') as f:
         stop_words = f.read().splitlines()
     stemmer = PorterStemmer()
 
@@ -24,7 +24,7 @@ def gather_20newsgroups_data():
             files = [(filename, dir_path + filename) for filename in listdir(dir_path) if isfile(dir_path + filename)]
             files.sort()
             for filename, filepath in files:
-                with open(filepath) as f:
+                with open(filepath, encoding = 'ISO-8859-1') as f:
                     text = f.read().lower()
                     #Remove stop words then stem the remaining words
                     words = [stemmer.stem(word) for word in re.split('\W+', text) if word not in stop_words]
@@ -50,7 +50,7 @@ def generate_vocabulary(data_path):
         assert df > 0
         return np.log10(corpus_size*1./df)
 
-    with open(data_path) as f:
+    with open(data_path, encoding = 'ISO-8859-1') as f:
         lines = f.read().splitlines()
     doc_count = defaultdict(int)
     corpus_size = len(lines)
@@ -74,12 +74,12 @@ def generate_vocabulary(data_path):
 
 def get_tf_idf(data_path):
     #Get pre-computed idf values
-    with open('../datasets/20news-bydate/words_idfs.txt') as f:
+    with open('../datasets/20news-bydate/words_idfs.txt', encoding = 'ISO-8859-1') as f:
         words_idfs = [(line.split('<fff>')[0], float(line.split('<fff>')[1])) for line in f.read().splitlines()]
         word_IDs = dict([(word, index) for index, (word,idf) in enumerate(words_idfs)])
         idfs = dict(words_idfs)
 
-    with open(data_path) as f:
+    with open(data_path, encoding = 'ISO-8859-1') as f:
         documents = [(int(line.split('<fff>')[0]), int(line.split('<fff>')[1]), line.split('<fff>')[2])
                      for line in f.read().splitlines()]
     data_tf_idf = []
