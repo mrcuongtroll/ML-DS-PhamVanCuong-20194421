@@ -12,7 +12,7 @@ def gather_20newsgroups_data():
     list_newsgroups = [newsgroup for newsgroup in listdir(train_dir)]
     list_newsgroups.sort()
 
-    with open('../datasets/20news-bydate/stop_words.txt') as f:
+    with open('../datasets/20news-bydate/stop_words.txt', encoding = 'ISO-8859-1') as f:
         stop_words = f.read().splitlines()
     stemmer = PorterStemmer()
 
@@ -24,7 +24,7 @@ def gather_20newsgroups_data():
             files = [(filename, dir_path + filename) for filename in listdir(dir_path) if isfile(dir_path + filename)]
             files.sort()
             for filename, filepath in files:
-                with open(filepath) as f:
+                with open(filepath, encoding = 'ISO-8859-1') as f:
                     text = f.read().lower()
                     #Remove stop words then stem the remaining words
                     words = [stemmer.stem(word) for word in re.split('\W+', text) if word not in stop_words]
@@ -37,11 +37,11 @@ def gather_20newsgroups_data():
     train_data = collect_data_from(parent_dir=train_dir, newsgroup_list=list_newsgroups)
     test_data = collect_data_from(parent_dir=test_dir, newsgroup_list=list_newsgroups)
     full_data = train_data + test_data
-    with open('../datasets/20news-bydate/20news-train-processed.txt', 'w') as f:
+    with open('../datasets/20news-bydate/20news-train-processed.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join(train_data))
-    with open('../datasets/20news-bydate/20news-test-processed.txt', 'w') as f:
+    with open('../datasets/20news-bydate/20news-test-processed.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join(test_data))
-    with open('../datasets/20news-bydate/20news-full-processed.txt', 'w') as f:
+    with open('../datasets/20news-bydate/20news-full-processed.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join(full_data))
     return
 
@@ -50,7 +50,7 @@ def generate_vocabulary(data_path):
         assert df > 0
         return np.log10(corpus_size*1./df)
 
-    with open(data_path) as f:
+    with open(data_path, encoding = 'ISO-8859-1') as f:
         lines = f.read().splitlines()
     doc_count = defaultdict(int)
     corpus_size = len(lines)
@@ -68,18 +68,18 @@ def generate_vocabulary(data_path):
                   if document_freq > 10 and not word.isdigit()]
     words_idfs.sort(key = lambda word_and_idf: -word_and_idf[1])
     print('Vocabulary size: {}'.format(len(words_idfs)))
-    with open('../datasets/20news-bydate/words_idfs.txt', 'w') as f:
+    with open('../datasets/20news-bydate/words_idfs.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join([word + '<fff>' + str(idf) for word,idf in words_idfs]))
     return
 
 def get_tf_idf(data_path):
     #Get pre-computed idf values
-    with open('../datasets/20news-bydate/words_idfs.txt') as f:
+    with open('../datasets/20news-bydate/words_idfs.txt', encoding = 'ISO-8859-1') as f:
         words_idfs = [(line.split('<fff>')[0], float(line.split('<fff>')[1])) for line in f.read().splitlines()]
         word_IDs = dict([(word, index) for index, (word,idf) in enumerate(words_idfs)])
         idfs = dict(words_idfs)
 
-    with open(data_path) as f:
+    with open(data_path, encoding = 'ISO-8859-1') as f:
         documents = [(int(line.split('<fff>')[0]), int(line.split('<fff>')[1]), line.split('<fff>')[2])
                      for line in f.read().splitlines()]
     data_tf_idf = []
@@ -106,13 +106,13 @@ if __name__ == '__main__':
     generate_vocabulary('../datasets/20news-bydate/20news-full-processed.txt')
 
     data_tf_idf_full = get_tf_idf('../datasets/20news-bydate/20news-full-processed.txt')
-    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf_full.txt', 'w') as f:
+    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf_full.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join([str(label) + '<fff>' + str(doc_id) + '<fff>' + sparse_rep for label, doc_id, sparse_rep in data_tf_idf_full]))
 
     data_tf_idf_train = get_tf_idf('../datasets/20news-bydate/20news-train-processed.txt')
-    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf_train.txt', 'w') as f:
+    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf_train.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join([str(label) + '<fff>' + str(doc_id) + '<fff>' + sparse_rep for label, doc_id, sparse_rep in data_tf_idf_train]))
 
     data_tf_idf_test = get_tf_idf('../datasets/20news-bydate/20news-test-processed.txt')
-    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf_test.txt', 'w') as f:
+    with open('../datasets/20news-bydate/20newsgroups_data_tf_idf_test.txt', 'w', encoding = 'ISO-8859-1') as f:
         f.write('\n'.join([str(label) + '<fff>' + str(doc_id) + '<fff>' + sparse_rep for label, doc_id, sparse_rep in data_tf_idf_test]))

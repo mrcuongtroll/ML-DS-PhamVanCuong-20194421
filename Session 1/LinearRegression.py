@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 def get_data(path, comment_symbol = '#'):
     X = []
     Y = []
-    with open(path, 'r') as data:
+    with open(path, 'r', encoding = 'ISO-8859-1') as data:
         for line in data:
             if line.startswith(comment_symbol):
                 pass

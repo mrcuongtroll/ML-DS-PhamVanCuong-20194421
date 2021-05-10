@@ -59,7 +59,7 @@ class MLP:
 class DataReader:
     def __init__(self, data_path, batch_size, vocab_size):
         self._batch_size = batch_size
-        with open(data_path) as f:
+        with open(data_path, encoding = 'ISO-8859-1') as f:
             d_lines = f.read().splitlines()
 
         self._data = []
@@ -116,13 +116,13 @@ def save_parameter(name, value, epoch):
         string_form = ','.join([str(number) for number in value])
     else:
         string_form = '\n'.join([','.join([str(number) for number in value[row]]) for row in range(value.shape[0])])
-    with open('../saved_params/' + filename, 'w') as f:
+    with open('../saved_params/' + filename, 'w', encoding = 'ISO-8859-1') as f:
         f.write(string_form)
 
 
 def resore_parameters(name, epoch):
     filename = name.replace(':', '-colon-') + '-epock-{}.txt'.format(epoch)
-    with open('../saved_params/' + filename) as f:
+    with open('../saved_params/' + filename, encoding = 'ISO-8859-1') as f:
         lines = f.read().splitlines()
     if len(lines) == 1:
         value = [float(number) for number in lines[0].split(',')]
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     tf.compat.v1.disable_eager_execution()
 
     #Create computational graph
-    with open('../datasets/20news-bydate/words_idfs.txt') as f:
+    with open('../datasets/20news-bydate/words_idfs.txt', encoding = 'ISO-8859-1') as f:
         vocab_size = len(f.read().splitlines())
 
     mlp = MLP(

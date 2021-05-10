@@ -14,9 +14,9 @@ def load_data(data_path):
             r_d[index] = tfidf
         return np.array(r_d)
 
-    with open(data_path) as f:
+    with open(data_path, encoding = 'ISO-8859-1') as f:
         d_lines = f.read().splitlines()
-    with open('../datasets/20news-bydate/words_idfs.txt') as f:
+    with open('../datasets/20news-bydate/words_idfs.txt', encoding = 'ISO-8859-1') as f:
         vocab_size = len(f.read().splitlines())
 
     data = []
