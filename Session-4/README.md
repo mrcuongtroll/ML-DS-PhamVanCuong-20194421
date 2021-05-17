@@ -10,4 +10,4 @@ The necessary data for this exercise is stored in datasets folder.
 2. Run `w2v_RNN.py`.
 
 Using tensorflow-gpu with a decent GPU card is recommended if you don't want to turn your computer into a toaster.
-Or you can try importing the code and data included in this repository on Google Colab and the and run it smoothly even with a potato-powered PC.
+Or you can try importing the code and data included in this repository on Google Colab and run it smoothly even with a potato-powered PC.
